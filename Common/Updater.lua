@@ -1,7 +1,9 @@
+package.cpath=string.gsub(package.cpath, ".lua", ".dll")
+
 local Updater = {} 
 Updater.__index = Updater
 
-function Updater.create(address, version, name)
+function Updater.create(address, name, version)
    local self = setmetatable({}, Updater)
    self.address=address
    self.version=version
