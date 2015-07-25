@@ -1,4 +1,4 @@
-package.cpath=string.gsub(package.cpath, ".lua", ".dll")
+package.cpath=string.gsub(package.path, ".lua", ".dll")
 
 local Updater = {} 
 Updater.__index = Updater
