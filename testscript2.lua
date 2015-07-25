@@ -1,4 +1,7 @@
-local version = 1.34
-OnLoop(function(myHero)
-DrawText(string.format("currhp = %f", GetCurrentHP(myHero)),12,0,80,0xff00ff00);
-end)
+local version = 1.32
+
+u=require("Updater")
+up=u.create("https://raw.githubusercontent.com/DrakeSharp/GOS/master/testscript2.lua", version, "testscript2")
+if up:newVersion() then up:update() end
+
+
