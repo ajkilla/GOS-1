@@ -13,7 +13,7 @@ function Updater.create(address, name, version)
 end
 
 function Updater:newVersion()
-  self.response=self.ut.request(self.address)
+  self.response=self.ut.request(self.address.."?rand="..math.random(1,10000))
   self.remoteVersion = string.match(self.response, "local version = %d+.%d+")
   self.remoteVersion = tonumber(string.match(self.remoteVersion, "%d+.%d+"))
   return self.remoteVersion>self.version
