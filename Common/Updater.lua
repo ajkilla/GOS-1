@@ -14,8 +14,8 @@ end
 
 function Updater:newVersion()
   self.response=self.ut.request(self.address)
-  local remoteVersion = string.match(self.response, "local version = %d+.%d+")
-  self.remoteVersion = tonumber(string.match(self.response, "%d+.%d+"))
+  self.remoteVersion = string.match(self.response, "local version = %d+.%d+")
+  self.remoteVersion = tonumber(string.match(self.remoteVersion, "%d+.%d+"))
   return self.remoteVersion>self.version
 end
 
