@@ -1,4 +1,4 @@
-local version = 0.14
+local version = 0.16
 
 function requireDL(script, address, retry)
   local retry = retry or 0
@@ -19,7 +19,9 @@ function requireDL(script, address, retry)
 	s, module = pcall(require, script) end
   return module
 end
+
 --REGION notifications
+
 Notification={}
 local notifications={}
 local notificationsActive=false
@@ -63,53 +65,52 @@ function notification(message, duration, animationscale, fontsize, textcolor, dr
 	for slot = 0, 15, 1 do
 		if notifications[slot]==nil then
 			notifications[slot]=Notification.new(message, duration, drawcolor, textcolor, animationscale, fontsize, slot*60+5)
+			notificationsActive=true
 			return
 		end
 	end
 end
+
 function notificationsOnLoop(tickcount)
 	for k, value in pairs(notifications) do
-		
 		value.onLoop(tickcount)
 		if value.toremove==true then notifications[k]=nil end
+	end
+	if next(notifications) == nil then
+		notificationsActive=false
 	end
 end
 
 --ENDREGION notifications
 
---REGION delayed
+--REGION delay
+
 local delayed={}
 local delayedActive=false
+
 function delay(func, t)
 	delayedActive=true
-	 
 	table.insert(delayed, {t+GetTickCount(), func})
 end
 	
-
-
-function delayedOnLoop()
+function delayedOnLoop(tickcount)
 	for i, item in pairs(delayed) do
-		if item[1] <= GetTickCount() then
+		if item[1] <= tickcount then
 			item[2]()
 			delayed[i] = nil
 		end
 	end
-end
---ENDREGION delayed
-
-function tablelength(T)
-  local count = 0
-  for _ in pairs(T) do count = count + 1 end
-  return count
+	if next(delayed) == nil then
+		delayedActive=false
+	end
 end
 
---delay(function() notification("lol", 4000, .1) end, 3000)
---delay(function() notification("lol", 4200) end, 4700)
+--ENDREGION delay
+
 OnLoop(function()
-local tickcount=GetTickCount()
---DrawText(string.format("tick = %d  %d", delayed[2][1], tickcount),112,0,80,0xFF09E86A);
-		delayedOnLoop() 
+	local tickcount=GetTickCount()
+	if delayedActive then
+		delayedOnLoop(tickcount) end
 	notificationsOnLoop(tickcount)
 end)
 
@@ -119,4 +120,11 @@ package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
 requireDL("Updater", "DrakeSharp/GOS/master/Common/Updater.lua")
 up=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
-if up.newVersion() then up.update() end
+if up.newVersion() then
+	up.update()
+	notification("DLib updated.\n2x F6 to load new version")
+	end
+
+
+
+

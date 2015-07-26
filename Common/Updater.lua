@@ -1,4 +1,4 @@
-local version = 1.61
+local version = 0.1
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 Updater={}
 
