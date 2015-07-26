@@ -1,4 +1,4 @@
-
+local version = 0.14
 
 function requireDL(script, address, retry)
   local retry = retry or 0
@@ -24,17 +24,56 @@ Notification={}
 local notifications={}
 local notificationsActive=false
 
-function Notification.new(message, duration)
+function Notification.new(message, duration, drawcolor, textcolor, animationscale, fontsize, y)
 	local this = {}
 	this.message = message
 	this.duration = duration
+	this.drawcolor=drawcolor or 0x70000000
+	this.textcolor=textcolor or 0xFF71D450
+	this.animationscale=animationscale or 1
+	this.x=-1000
+	this.y=y
+	this.toremove=false
+	this.creationTime=GetTickCount()+300*animationscale
 	
-	function this.onLoop(y)
-		FillRect(7,y,200,50,0x70000000);
+	function this.updateX(tickcount)
+		if tickcount>this.creationTime and tickcount<this.creationTime+this.duration  then this.x=7 return end
+		if(tickcount>this.creationTime+this.duration) then
+			local z=(tickcount-(this.creationTime+this.duration))/animationscale
+			this.x=math.ceil(7+0.0018*z*z - 1.23*z)
+				if tickcount>this.creationTime+this.duration+300*animationscale then this.toremove=true end
+			return
+		end
+		local z=(this.creationTime-tickcount)/animationscale
+		this.x=math.ceil(7+0.0018*z*z - 1.23*z)
 	end
+		
+	function this.onLoop(tickcount)
+		this.updateX(tickcount)
+		FillRect(this.x,this.y,200,50,this.drawcolor) 
+		DrawText("Testing...",14,this.x+2, this.y+5, this.textcolor)
+		end
 	return this
 end
 
+function notification(message, duration, animationscale, fontsize, textcolor, drawcolor)
+	drawcolor=drawcolor or 0x70000000
+	textcolor=textcolor or 0xFF71D450
+	animationscale=animationscale or 1
+	for slot = 0, 15, 1 do
+		if notifications[slot]==nil then
+			notifications[slot]=Notification.new(message, duration, drawcolor, textcolor, animationscale, fontsize, slot*60+5)
+			return
+		end
+	end
+end
+function notificationsOnLoop(tickcount)
+	for k, value in pairs(notifications) do
+		
+		value.onLoop(tickcount)
+		if value.toremove==true then notifications[k]=nil end
+	end
+end
 
 --ENDREGION notifications
 
@@ -43,38 +82,41 @@ local delayed={}
 local delayedActive=false
 function delay(func, t)
 	delayedActive=true
-	delayed[t+GetTickCount()]=func end
+	 
+	table.insert(delayed, {t+GetTickCount(), func})
+end
+	
 
 
 function delayedOnLoop()
-	for t, func in pairs(delayed) do
-		if t <= GetTickCount() then
-			delayed[t] = nil
-			if next(delayed) == nil then
-				delayedActive=false
-			end
-			func()
-			return
+	for i, item in pairs(delayed) do
+		if item[1] <= GetTickCount() then
+			item[2]()
+			delayed[i] = nil
 		end
 	end
 end
 --ENDREGION delayed
 
-OnLoop(function()
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
 
-	if delayedActive then
-		delayedOnLoop() end
+--delay(function() notification("lol", 4000, .1) end, 3000)
+--delay(function() notification("lol", 4200) end, 4700)
+OnLoop(function()
+local tickcount=GetTickCount()
+--DrawText(string.format("tick = %d  %d", delayed[2][1], tickcount),112,0,80,0xFF09E86A);
+		delayedOnLoop() 
+	notificationsOnLoop(tickcount)
 end)
 
 
 
-
-
-local version = 0.14
-
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
-
 requireDL("Updater", "DrakeSharp/GOS/master/Common/Updater.lua")
 up=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
 if up.newVersion() then up.update() end

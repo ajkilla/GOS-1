@@ -1,4 +1,4 @@
-local version = 1.7
+local version = 1.61
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 Updater={}
 
@@ -11,16 +11,20 @@ function Updater.new(address, name, version)
 	
 	function this.newVersion()
 		this.response=this.ut.request("github", this.address.."?rand="..math.random(1,10000))
+		if this.response==nil then return false end
 		this.remoteVersion = string.match(this.response, "local version = %d+.%d+")
 		this.remoteVersion = tonumber(string.match(this.remoteVersion, "%d+.%d+"))
 	return this.remoteVersion>this.version
 	end
 	
 	function this.update()
+		if this.response==nil then end
 		this.ut.saveScript(this.name, this.response)
+		require("DLib")
+		notification("Script "..this.name.." updated.\n2x F6 to load new version.", 5000)
 	end
 	return this
 end
 
-UPDATEUPDATERHUE=Updater.new("https://raw.githubusercontent.com/DrakeSharp/GOS/master/Common/Updater.lua", "Common\\Updater", version)
+UPDATEUPDATERHUE=Updater.new("DrakeSharp/GOS/master/Common/Updater.lua", "Common\\Updater", version)
 if UPDATEUPDATERHUE.newVersion() then UPDATEUPDATERHUE.update() end
