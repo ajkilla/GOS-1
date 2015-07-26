@@ -1,20 +1,61 @@
+
+
+
+
+function requireDL(script, address, retry)
+  local retry = retry or 0
+  local status, module = pcall(require, script)
+  
+  if not status and retry<4 then
+	retry=retry+1
+    response=g.request(address.."?rand="..math.random(1,10000))
+    if response~=nil then
+      g.saveScript("Common\\"..script, response) end
+    requireDL(script, address, retry)
+  else
+    if retry==4 then
+      MessageBox(0,"Unable to download library "..script,"Error!",0) end
+
+  end
+  if retry>0 then
+	s, module = pcall(require, script) end
+  return module
+end
+
+local delayed={}
+local delayedActive=false
+function delay(func, t)
+	delayedActive=true
+	delayed[t+GetTickCount()]=func end
+
+
+function delayedOnLoop()
+	for t, func in pairs(delayed) do
+		if t <= GetTickCount() then
+		delayed[t] = nil
+    if next(myTable) == nil then
+      delayedActive=false
+    end
+		func()
+		return
+		end
+	end
+end
+	
+OnLoop(function(myHero)
+if delayedActive then
+	delayedOnLoop() end
+end)
+
+
+
+
+
+local version = 0.11
+
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
 
-function requireDL(script, address, retry)
-  retry = retry or 0
-  local status, module = pcall(require, script)
-  ret = status and module or nil
-  
-  if ret==nil and retry<5 then
-    print(retry)
-    response=g.request(address.."?rand="..math.random(1,10000))
-    if response~="Not Found" then
-      g.saveScript("Common\\"..script, response) end
-    requireDL(script, address, retry+1)
-  else
-    if retry==5 then
-      MessageBox(0,"Unable to download library "..script,"Error!",0); end
-    return ret
-  end
-end
+u=requireDL("Updater", "https://raw.githubusercontent.com/DrakeSharp/GOS/master/Common/Updater.lua")
+up=u.create("https://raw.githubusercontent.com/DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
+if up:newVersion() then up:update() end
