@@ -20,8 +20,6 @@ function Updater.new(address, name, version)
 	function this.update()
 		if this.response==nil then end
 		this.ut.saveScript(this.name, this.response)
-		require("DLib")
-		notification("Script "..this.name.." updated.\n2x F6 to load new version.", 5000)
 	end
 	return this
 end
