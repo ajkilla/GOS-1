@@ -1,9 +1,8 @@
-local version = 1.5
+local version = 1.6
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 Updater={}
-local ut=require("GOSUtility")
+
 function Updater.new(address, name, version)
-	ut.println("Updater new")
 	local this = {}
 	this.address=address
 	this.version=version
