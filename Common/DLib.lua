@@ -6,7 +6,7 @@ function requireDL(script, address, retry)
   
   if not status and retry<4 then
 	retry=retry+1
-    response=g.request(address.."?rand="..math.random(1,10000))
+    response=g.request("github", address.."?rand="..math.random(1,10000))
     if response~=nil then
       g.saveScript("Common\\"..script, response) end
     requireDL(script, address, retry)
@@ -70,11 +70,11 @@ end)
 
 
 
-local version = 0.13
+local version = 0.14
 
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
 
-requireDL("Updater", "https://raw.githubusercontent.com/DrakeSharp/GOS/master/Common/Updater.lua")
-up=Updater.new("https://raw.githubusercontent.com/DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
+requireDL("Updater", "DrakeSharp/GOS/master/Common/Updater.lua")
+up=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
 if up.newVersion() then up.update() end
