@@ -2,7 +2,7 @@ local version = 1.25
 require ("DLib")
 require("Updater")
 up=Updater.new("https://raw.githubusercontent.com/DrakeSharp/GOS/master/testscript2.lua", "testscript2", version)
-if up:newVersion() then up:update() end
+if up.newVersion() then up.update() end
 
 local x=44
 delay(function()
