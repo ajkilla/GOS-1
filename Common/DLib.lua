@@ -1,7 +1,4 @@
 
-
-
-
 function requireDL(script, address, retry)
   local retry = retry or 0
   local status, module = pcall(require, script)
@@ -33,7 +30,7 @@ function delayedOnLoop()
 	for t, func in pairs(delayed) do
 		if t <= GetTickCount() then
 		delayed[t] = nil
-    if next(myTable) == nil then
+    if next(delayed) == nil then
       delayedActive=false
     end
 		func()
@@ -51,7 +48,7 @@ end)
 
 
 
-local version = 0.11
+local version = 0.12
 
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
