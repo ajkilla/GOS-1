@@ -1,4 +1,4 @@
-local version = 0.16
+local version = 0.17
 
 function requireDL(script, address, retry)
   local retry = retry or 0
@@ -53,7 +53,7 @@ function Notification.new(message, duration, drawcolor, textcolor, animationscal
 	function this.onLoop(tickcount)
 		this.updateX(tickcount)
 		FillRect(this.x,this.y,200,50,this.drawcolor) 
-		DrawText("Testing...",14,this.x+2, this.y+5, this.textcolor)
+		DrawText(this.message,14,this.x+2, this.y+5, this.textcolor)
 		end
 	return this
 end
@@ -123,7 +123,7 @@ up=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
 if up.newVersion() then
 	up.update()
 	notification("DLib updated.\n2x F6 to load new version", 5000)
-	end
+end
 
 
 
