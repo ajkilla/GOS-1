@@ -1,4 +1,4 @@
-local version = 1.0
+local version = 1.1
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 Updater={}
 local ut=require("GOSUtility")
@@ -23,5 +23,5 @@ function Updater.new(address, name, version)
 	return this
 end
 
-UPDATEUPDATERHUE=Updater.new("https://raw.githubusercontent.com/DrakeSharp/GOS/master/testscript2.lua", "Common\\Updater", version)
+UPDATEUPDATERHUE=Updater.new("https://raw.githubusercontent.com/DrakeSharp/GOS/master/Common/Updater.lua", "Common\\Updater", version)
 if UPDATEUPDATERHUE.newVersion() then UPDATEUPDATERHUE.update() end

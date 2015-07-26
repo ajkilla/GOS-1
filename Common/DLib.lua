@@ -70,7 +70,7 @@ end)
 
 
 
-local version = 0.12
+local version = 0.13
 
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
