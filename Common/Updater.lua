@@ -1,28 +1,23 @@
 local version = 1.0
-
 package.cpath=string.gsub(package.path, ".lua", ".dll")
+Updater={}
 
-local Updater = {} 
-Updater.__index = Updater
-
-function Updater.create(address, name, version)
-   local self = setmetatable({}, Updater)
-   self.address=address
-   self.version=version
-   self.name=name
-   self.ut=require("GOSUtility")
-   return self
+function Updater.new(address, name, version)
+	local this = {}
+	this.address=address
+	this.version=version
+	this.name=name
+	this.ut=require("GOSUtility")
+	
+	function this.newVersion()
+		this.response=this.ut.request(this.address.."?rand="..math.random(1,10000))
+		this.remoteVersion = string.match(this.response, "local version = %d+.%d+")
+		this.remoteVersion = tonumber(string.match(this.remoteVersion, "%d+.%d+"))
+	return this.remoteVersion>this.version
+	end
+	
+	function this.update()
+		this.ut.saveScript(this.name, this.response)
+	end
+	return this
 end
-
-function Updater:newVersion()
-  self.response=self.ut.request(self.address.."?rand="..math.random(1,10000))
-  self.remoteVersion = string.match(self.response, "local version = %d+.%d+")
-  self.remoteVersion = tonumber(string.match(self.remoteVersion, "%d+.%d+"))
-  return self.remoteVersion>self.version
-end
-
-function Updater:update()
-  self.ut.saveScript(self.name, self.response)
-end
-
-return Updater
