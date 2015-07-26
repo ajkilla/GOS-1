@@ -122,7 +122,7 @@ requireDL("Updater", "DrakeSharp/GOS/master/Common/Updater.lua")
 up=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
 if up.newVersion() then
 	up.update()
-	notification("DLib updated.\n2x F6 to load new version")
+	notification("DLib updated.\n2x F6 to load new version", 5000)
 	end
 
 
