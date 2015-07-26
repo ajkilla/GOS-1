@@ -1,4 +1,4 @@
-local version = 1.4
+local version = 1.5
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 Updater={}
 local ut=require("GOSUtility")
