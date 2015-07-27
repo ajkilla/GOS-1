@@ -1,4 +1,4 @@
-local version = 0.17
+local version = 0.18
 
 function requireDL(script, address, retry)
   local retry = retry or 0

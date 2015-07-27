@@ -1,4 +1,4 @@
-local version = 1.29
+local version = 1.30
 require ("DLib")
 require("Updater")
 up=Updater.new("DrakeSharp/GOS/master/testscript2.lua", "testscript2", version)
