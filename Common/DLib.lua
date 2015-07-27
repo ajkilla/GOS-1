@@ -6,9 +6,9 @@ function requireDL(script, address, retry)
   
   if not status and retry<4 then
 	retry=retry+1
-    response=g.request("github", address.."?rand="..math.random(1,10000))
+    response=webRequest("github", address.."?rand="..math.random(1,10000))
     if response~=nil then
-      g.saveScript("Common\\"..script, response) end
+      saveScript("Common\\"..script, response) end
     requireDL(script, address, retry)
   else
     if retry==4 then
@@ -53,7 +53,7 @@ function Notification.new(message, duration, drawcolor, textcolor, animationscal
 	function this.onLoop(tickcount)
 		this.updateX(tickcount)
 		FillRect(this.x,this.y,200,50,this.drawcolor) 
-		DrawText(this.message,14,this.x+2, this.y+5, this.textcolor)
+		DrawText(this.message,14,this.x+3, this.y+5, this.textcolor)
 		end
 	return this
 end
@@ -107,6 +107,29 @@ end
 
 --ENDREGION delay
 
+
+
+--REGION GOSUTILITY
+
+function listScripts()
+	return g.listScripts() end
+	
+function print(text)
+	return g.print(text) end
+
+function printn(text)
+	return g.printn(text) end
+
+function closeConsole()
+	return g.closeConsole() end
+	
+function saveScript(name)
+	g.saveScript(name) end
+	
+function webRequest(server, address)
+	g.request(name) end
+--ENDREGION GOSUTILITY
+
 OnLoop(function()
 	local tickcount=GetTickCount()
 	if delayedActive then
@@ -115,15 +138,15 @@ OnLoop(function()
 end)
 
 
-
 package.cpath=string.gsub(package.path, ".lua", ".dll")
 g=require("GOSUtility")
 requireDL("Updater", "DrakeSharp/GOS/master/Common/Updater.lua")
 up=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
 if up.newVersion() then
 	up.update()
-	notification("DLib updated.\n2x F6 to load new version", 5000)
+	notification("DLib updated.\n2x F6 to load new version", 10000)
 end
+
 
 
 
