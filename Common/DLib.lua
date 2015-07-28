@@ -54,7 +54,7 @@ function Notification.new(message, duration, drawcolor, textcolor, animationscal
 		this.updateX(tickcount)
 		FillRect(this.x,this.y,200,50,this.drawcolor) 
 		DrawText(this.message,14,this.x+3, this.y+5, this.textcolor)
-		end
+	end
 	return this
 end
 
@@ -107,7 +107,45 @@ end
 
 --ENDREGION delay
 
+--REGION Menu
 
+function MainMenu.new(x, y)
+	local this = {}
+	this.children = {}
+	
+	function this.addItem(MenuItem, name)
+		MenuItem.parent=this
+		this.children[name]=MenuItem
+	end
+	
+	function this.onLoop()
+		for i, item in pairs(children) do
+			item.onLoop()
+		end
+	end
+	
+	return this
+end
+
+function Menu.new(text, parent, width)
+	local this = {}
+	this.width=width or 100
+	this.children = {}
+	this.parent=parent
+
+	
+	function this.onLoop()
+	
+		for i, item in pairs(children) do
+			item.onLoop()
+		end
+
+	end
+	
+	return this
+end
+	
+--ENDREGION Menu
 
 --REGION GOSUTILITY
 
