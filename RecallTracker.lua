@@ -6,7 +6,6 @@ if pcall(require, "Updater") then
 	if up.newVersion() then 
 		up.update()
 		PrintChat("Script updated and saved as \"RecallTracker.lua\". Use Loader or rename to testscript to load it.") end
-	end
 else
 	PrintChat("Recall tracker: You don't have AutoUpdater. Autoupdate won't work.") end
 
