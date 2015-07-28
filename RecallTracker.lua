@@ -1,9 +1,12 @@
-local version = 1.0
+local version = 1.1
 
 
 if pcall(require, "Updater") then
-	up=Updater.new("DrakeSharp/GOS/master/RecallTracker.lua", "RecallTracker", version)
-	if up.newVersion() then up.update() end
+	up=Updater.new("DrakeSharp/GOS/master/testscripdt3.lua", "RecallTracker", version)
+	if up.newVersion() then 
+		up.update()
+		PrintChat("Script updated and saved as \"RecallTracker.lua\". Use Loader or rename to testscript to load it.") end
+	end
 else
 	PrintChat("Recall tracker: You don't have AutoUpdater. Autoupdate won't work.") end
 
@@ -12,8 +15,8 @@ local x = 5
 local y = 500
 local barWidth = 250
 local rowHeight = 18
-local onlyEnemies = false
-local onlyFOW = false
+local onlyEnemies = true
+local onlyFOW = true
 
 OnLoop(function()
 	
