@@ -2,7 +2,7 @@ local version = 1.1
 
 
 if pcall(require, "Updater") then
-	up=Updater.new("DrakeSharp/GOS/master/testscripdt3.lua", "RecallTracker", version)
+	up=Updater.new("DrakeSharp/GOS/master/RecallTracker.lua", "RecallTracker", version)
 	if up.newVersion() then 
 		up.update()
 		PrintChat("Script updated and saved as \"RecallTracker.lua\". Use Loader or rename to testscript to load it.") end
