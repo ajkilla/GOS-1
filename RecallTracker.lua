@@ -1,4 +1,4 @@
-local version = 1.1
+local version = 2
 require ("DLib")
 
 up=Updater.new("DrakeSharp/GOS/master/RecallTracker.lua", "RecallTracker", version)
