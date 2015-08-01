@@ -1,4 +1,4 @@
-local version = 0
+local version = 1
 
 function prequire(m) 
   local ok, err = pcall(require, m) 
