@@ -1,13 +1,9 @@
-local version = 1.0
+local version = 1.1
+require ("DLib")
 
-
-if pcall(require, "Updater") then
-	up=Updater.new("DrakeSharp/GOS/master/RecallTracker.lua", "RecallTracker", version)
-	if up.newVersion() then 
-		up.update()
-		PrintChat("Script updated and saved as \"RecallTracker.lua\". Use Loader or rename to testscript to load it.") end
-else
-	PrintChat("Recall tracker: You don't have AutoUpdater. Autoupdate won't work.") end
+up=Updater.new("DrakeSharp/GOS/master/RecallTracker.lua", "RecallTracker", version)
+if up.newVersion() then 
+	up.update() end
 
 local recalling = {}
 local x = 5
