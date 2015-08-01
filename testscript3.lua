@@ -1,7 +1,7 @@
 local version = 1
 require ("DLib")
 
-local UP=Updater.new("DrakeSharp/GOS/master/Common/testscript3.lua", "testscript3", version)
+local UP=Updater.new("DrakeSharp/GOS/master/testscript3.lua", "testscript3", version)
 if UP.newVersion() then UP.update() end
 
 local ssl=menu.addItem(SubMenu.new("Simple Script Loader"))
@@ -17,4 +17,3 @@ for i, script in ipairs(listScripts()) do
 		end
 	end
 	
-end
