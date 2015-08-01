@@ -16,4 +16,4 @@ for i, script in ipairs(listScripts()) do
 			loaded.addItem(MenuSeparator.new(script))
 		end
 	end
-	
+end
