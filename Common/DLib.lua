@@ -1,4 +1,4 @@
-local version = 1
+local version = 0
 
 function prequire(m) 
   local ok, err = pcall(require, m) 
@@ -1909,7 +1909,7 @@ function Updater.new(address, name, version)
 	function this.update()
 		if this.response==nil then end
 		saveScript(this.name, this.response)
-		notification(this.name.." updated. F6-F6 to reload.")
+		notification(this.name.." updated.\n F6-F6 to reload.", 8000)
 	end
 	return this
 end
