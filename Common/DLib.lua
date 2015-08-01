@@ -1901,8 +1901,12 @@ function Updater.new(address, name, version)
 		if not updaterActive.getValue() or not g then return false end
 		this.response=webRequest("github", this.address.."?rand="..math.random(1,10000))
 		if this.response==nil then return false end
-		this.remoteVersion = string.match(this.response, "local version = %d")
-		this.remoteVersion = tonumber(string.match(this.remoteVersion, "%d"))
+		this.remoteVersion = string.match(this.response, "local version = %d+")
+		if this.remoteVersion==nil then 
+			this.response=nil
+			return false 
+		end
+		this.remoteVersion = tonumber(string.match(this.remoteVersion, "%d+"))
 	return this.remoteVersion>this.version
 	end
 	
