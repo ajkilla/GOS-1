@@ -1931,7 +1931,7 @@ updaterActive=menu.addItem(MenuBool.new("Updater active", true))
 
 g=prequire("GOSUtility")
 if g then
-	local UP=Updater.new("DrakeSharp/GOS/master/Common/Updater.lua", "Common\\Updater", version)
+	local UP=Updater.new("DrakeSharp/GOS/master/Common/DLib.lua", "Common\\DLib", version)
 	if UP.newVersion() then UP.update() end
 else
 	PrintChat("GOSUtility.dll not found. Functions using GOSUtility won't work.")
