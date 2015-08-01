@@ -1913,7 +1913,7 @@ function Updater.new(address, name, version)
 	function this.update()
 		if this.response==nil then end
 		saveScript(this.name, this.response)
-		notification(this.name.." updated.\n F6-F6 to reload.", 8000)
+		delay(function() notification(this.name.." updated.\n F6-F6 to reload.", 5000) end, 5000)
 	end
 	return this
 end
