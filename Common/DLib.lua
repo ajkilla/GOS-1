@@ -1,4 +1,4 @@
-local version = 3
+local version = 4
 
 function prequire(m) 
   local ok, err = pcall(require, m) 
@@ -872,7 +872,7 @@ function MenuBool.new(name, active)
 	--item fields
 	local this = {}
 	this.name = name or "Unnamed"
-	this.valueActive=false
+	this.valueActive=active or false
 	this.parent=parent
 	this.mainMenu=nil
 	this.textY=0
