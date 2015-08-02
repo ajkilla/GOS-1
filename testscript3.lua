@@ -1,4 +1,4 @@
-local version = 3
+local version = 4
 require ("DLib")
 
 local UP=Updater.new("DrakeSharp/GOS/master/testscript3.lua", "testscript3", version)
@@ -16,6 +16,8 @@ for i, script in ipairs(listScripts()) do
 	if all.addItem(MenuBool.new(script)).getValue() then
 		if prequire(script)~=nil then
 			loaded.addItem(MenuSeparator.new(script))
+    else
+      notification(script..":\n Failed to load", 5000)
 		end
 	end
 end
