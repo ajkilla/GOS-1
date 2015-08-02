@@ -1,8 +1,10 @@
-local version = 2
+local version = 3
 require ("DLib")
 
 local UP=Updater.new("DrakeSharp/GOS/master/testscript3.lua", "testscript3", version)
 if UP.newVersion() then UP.update() end
+
+if gVersion()<2 then notification("Redownload GOSUtility", 10000) end
 
 local ssl=menu.addItem(SubMenu.new("Simple Script Loader"))
 local loaded=ssl.addItem(SubMenu.new("Loaded scripts"))

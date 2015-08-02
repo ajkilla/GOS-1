@@ -1,4 +1,4 @@
-local version = 2
+local version = 3
 
 function prequire(m) 
   local ok, err = pcall(require, m) 
@@ -1245,6 +1245,10 @@ end
 function getResolution()
 	local res = g.resolution()
 	return Vector2.new(res[1], res[2])
+end
+
+function gVersion()
+	return g.version()
 end
 --ENDREGION GOSUTILITY---------------------------------------------------------}
 
