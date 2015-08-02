@@ -1,4 +1,4 @@
-local version = 1
+local version = 2
 require ("DLib")
 
 local UP=Updater.new("DrakeSharp/GOS/master/testscript3.lua", "testscript3", version)
@@ -11,7 +11,7 @@ ssl.addItem(MenuSeparator.new("Don't forget about F6-F6"))
 ssl.addItem(MenuSeparator.new("to load/unload selected scripts"))
 
 for i, script in ipairs(listScripts()) do
-	if all.addItem(SubMenu.new(script)).addItem(MenuBool.new("Load")).getValue() then
+	if all.addItem(MenuBool.new(script)).getValue() then
 		if prequire(script)~=nil then
 			loaded.addItem(MenuSeparator.new(script))
 		end

@@ -1,4 +1,4 @@
-local version = 1
+local version = 2
 
 function prequire(m) 
   local ok, err = pcall(require, m) 
@@ -503,13 +503,14 @@ function SubMenu.new(name)
 	
 	function this.show()
 		for num, item in ipairs(this.children) do
-			item.hide()
+			item.show()
 		end
 	end
 	
 	function this.hide()
+		this.dragging=false
 		for num, item in ipairs(this.children) do
-			item.show()
+			item.hide()
 		end
 	end
 	
@@ -664,8 +665,21 @@ function MenuSeparator.new(name)
 	this.rectangle = Rectangle.new(0, 0, ITEMWIDTH, ITEMHEIGHT)
 	this.textlengthAdd=20
 	
+	this.allowDrag=true
+	this.dragPos=Vector2.new()
+	this.dragging=false
+	this.dragUnlocked=false
+	
 	function this.processInput(key, pressed, mouseVector)
-
+		if key==1 and not pressed then
+			this.dragging=false
+		end
+		if key==1 and this.rectangle.contains(mouseVector) and pressed then
+				this.dragging=true
+				this.dragUnlocked=false
+				this.dragPos=Vector2.new(mouseVector)
+				this.active=true
+		end
 	end
 
 	function this.getValue()
@@ -711,6 +725,21 @@ function MenuSeparator.new(name)
 	end
 
 	function this.onLoop()
+		if this.active then
+			if this.dragging then
+				tempVec=mousePos().sub(this.dragPos)
+				if this.dragUnlocked then
+					this.dragPos=mousePos()
+					this.mainMenu.setMenuPosition(tempVec.add(this.mainMenu.pos))
+				elseif not this.dragUnlocked and tempVec.len2()>100 then
+					this.dragUnlocked=true
+					this.dragPos=mousePos()
+				end
+			end
+		end
+	
+	
+	
 		this.rectangle.draw(MENUBGCOLOR)
 		DrawText(this.name, 15, this.pos.x+5, this.textY, MENUTEXTCOLOR)
 		FillRect(this.rectangle.x,this.rectangle.y,this.rectangle.width,2,MENUBORDERCOLOR)
@@ -720,6 +749,7 @@ function MenuSeparator.new(name)
 	end
 	
 	function this.hide()
+		this.dragging=false
 	end
 	
 	return this
@@ -1176,7 +1206,12 @@ function extensionsActive()
 end
 
 function listScripts()
-	return g.listScripts() end
+	local ret={} 
+	for k, v in pairs(g.listScripts()) do 
+		table.insert(ret, v)
+	end 
+	return ret 
+end
 	
 function print(text)
 	return g.print(text) end
@@ -1936,7 +1971,6 @@ if g then
 else
 	PrintChat("GOSUtility.dll not found. Functions using GOSUtility won't work.")
 end
-
 
 
 OnLoop(function()
