@@ -7,10 +7,11 @@ if up.newVersion() then
 
 local subm=menu.addItem(SubMenu.new("Recall tracker"))
 local barWidth=subm.addItem(MenuSlider.new("Bar width",250, 1, 1000, 1))
-local rowHeight=subm.addItem(MenuSlider.new("Row Height",18, 16, 30, 1))
+local rowHeight=subm.addItem(MenuSlider.new("Row Height",18, 18, 30, 1))
 local onlyEnemies=subm.addItem(MenuBool.new("Track enemies only", true))
 local onlyFOW=subm.addItem(MenuBool.new("Track recalls started in FOW only", true))
 local keytomove=subm.addItem(MenuKeyBind.new("Hold to move bars", 90))
+local side=subm.addItem(MenuStringList.new("Bars on the side", {"Right", "Left", "Nowhere"}))
 
 local recalling = {}
 if c.config.recallkrystiantracker==nil then c.config.recallkrystiantracker={} end
@@ -73,14 +74,19 @@ OnLoop(function()
 		local leftTime = recallObj.starttime - GetTickCount() + recallObj.info.totalTime
 		
 		if leftTime<0 then leftTime = 0 end
-		FillRect(rect.x,rect.y+rowHeight.getValue()*i-2,168,rowHeight.getValue(),0x50000000)
+		FillRect(rect.x,rect.y+rowHeight.getValue()*i-2,168,rowHeight.getValue(),0x90000000)
 		if i>1 then FillRect(rect.x,rect.y+rowHeight.getValue()*i-2,168,1,0xC0000000) end
 		
-		DrawText(string.format("%s (%d%%)", hero, percent), 14, rect.x+2, rect.y + rowHeight.getValue()*i, color)
+		DrawText(string.format("%s (%d%%)", hero, percent), 14, rect.x+2, rect.y + rowHeight.getValue()*i+(rowHeight.getValue()-18)/2, color)
 		
 		if recallObj.info.isStart then
-			DrawText(string.format("%.1fs", leftTime/1000), 14, rect.x+115, rect.y+rowHeight.getValue()*i, color)
-			FillRect(rect.x+169,rect.y+rowHeight.getValue()*i, barWidth.getValue()*leftTime/recallObj.info.totalTime,14,0x80000000)
+			DrawText(string.format("%.1fs", leftTime/1000), 14, rect.x+115, rect.y+rowHeight.getValue()*i+(rowHeight.getValue()-18)/2, color)
+			local leng=round(barWidth.getValue()*leftTime/recallObj.info.totalTime)
+			if side.getValue()==1 then
+				FillRect(rect.x+169,rect.y+rowHeight.getValue()*i, leng,14,0x90000000)
+			elseif side.getValue()==2 then
+				FillRect(rect.x-1-leng,rect.y+rowHeight.getValue()*i+(rowHeight.getValue()-18)/2, leng,14,0x90000000)
+			end
 		else
 			if recallObj.killtime == nil then
 				if recallObj.info.isFinish and not recallObj.info.isStart then
@@ -92,7 +98,7 @@ OnLoop(function()
 				end
 				
 			end
-			DrawText(recallObj.result, 14, rect.x+115, rect.y+rowHeight.getValue()*i, color)
+			DrawText(recallObj.result, 14, rect.x+115, rect.y+rowHeight.getValue()*i+(rowHeight.getValue()-18)/2, color)
 		end
 		
 		if recallObj.killtime~=nil and GetTickCount() > recallObj.killtime then
