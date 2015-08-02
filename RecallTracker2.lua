@@ -83,7 +83,7 @@ OnLoop(function()
 			DrawText(string.format("%.1fs", leftTime/1000), 14, rect.x+115, rect.y+rowHeight.getValue()*i+(rowHeight.getValue()-18)/2, color)
 			local leng=round(barWidth.getValue()*leftTime/recallObj.info.totalTime)
 			if side.getValue()==1 then
-				FillRect(rect.x+169,rect.y+rowHeight.getValue()*i, leng,14,0x90000000)
+				FillRect(rect.x+169,rect.y+rowHeight.getValue()*i(rowHeight.getValue()-18)/2, leng,14,0x90000000)
 			elseif side.getValue()==2 then
 				FillRect(rect.x-1-leng,rect.y+rowHeight.getValue()*i+(rowHeight.getValue()-18)/2, leng,14,0x90000000)
 			end
